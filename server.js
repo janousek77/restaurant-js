@@ -7,6 +7,7 @@ app.use(cors()); // gets us past cors errors
 var unirest = require("unirest"); // backend http calls (get, post, put, delete)
 
 app.get("/location/:location", function (req, res) {
+  // a simple change
   const key = req.params.location;
   getLatLong(key)
     .then((obj) => getRestaurants(obj))

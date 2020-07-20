@@ -6,6 +6,10 @@ document.getElementById("submit_btn").addEventListener("click", (e) => {
   let keywords = document.getElementById("search-input-restaurants").value;
   console.log(keywords); // check input
 
+  fetch(`http://localhost:3000/location/${keywords}`)
+    .then((response) => response.json())
+    .then((data) => console.log(data));
+
   document.getElementById("card-container").append(createCards(keywords));
 });
 
@@ -45,7 +49,3 @@ function createCards(input) {
 
   return card;
 }
-
-// fetch("http://localhost:3000/location/seattle")
-//   .then((response) => response.json())
-//   .then((data) => console.log(data));

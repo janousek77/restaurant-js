@@ -7,8 +7,11 @@ app.use(cors()); // gets us past cors errors
 var unirest = require("unirest"); // backend http calls (get, post, put, delete)
 
 var place; // variable returned object from first api call that has city info
+var list;
 
 app.get("/location/:location", function (req, res) {
+  place = undefined;
+  list = undefined;
   const key = req.params.location;
 
   getLatLong(key); //calls api and gets a citys info
@@ -20,7 +23,11 @@ app.get("/location/:location", function (req, res) {
     }, 2000);
   else getRestaurants();
 
-  res.json("done");
+  if (list === undefined)
+    setTimeout(function () {
+      res.json(list); //sends back list of restaurants from the city
+    }, 5000);
+  else res.json(list);
 });
 
 function getLatLong(location) {
@@ -71,8 +78,7 @@ function getRestaurants() {
 
   req.end(function (res) {
     if (res.error) throw new Error(res.error);
-
-    console.log(res.body);
+    list = res.body;
   });
 }
 

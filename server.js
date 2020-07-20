@@ -8,6 +8,7 @@ var unirest = require("unirest"); // backend http calls (get, post, put, delete)
 
 app.get("/location/:location", function (req, res) {
   // a simple change
+  //   second change
   const key = req.params.location;
   getLatLong(key)
     .then((obj) => getRestaurants(obj))

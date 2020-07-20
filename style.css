@@ -1,0 +1,30 @@
+.navbar {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  float: left;
+  width: 100vw;
+}
+#search-section {
+  width: 100vw;
+  height: 100vh;
+}
+
+#display-section {
+  width: 100vw;
+  height: 100vh;
+}
+
+#card-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+#map-title {
+  text-align: center;
+}
+.footer {
+  position: relative;
+  bottom: 0;
+}

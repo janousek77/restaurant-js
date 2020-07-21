@@ -96,6 +96,16 @@ function createCards(input) {
   descriptionPara.setAttribute("class", "card-text");
   descriptionPara.innerHTML = input.description;
 
+  let priceLevel = document.createElement("p");
+  priceLevel.setAttribute("class", "price-level");
+  if (input.price_level !== undefined && input.price_level !== "") {
+    priceLevel.innerHTML = "Price: " + input.price_level;
+  } else if (input.price !== undefined && input.price !== "") {
+    priceLevel.innerHTML = "Price: " + input.price;
+  } else {
+    priceLevel.innerHTML = "Price: N/A";
+  }
+
   let detailsBtn = document.createElement("a");
   detailsBtn.setAttribute("class", "btn btn-primary");
   detailsBtn.innerHTML = "View details";
@@ -107,7 +117,13 @@ function createCards(input) {
   }
 
   descriptionContainer.append(descriptionPara);
-  cardBody.append(cardTitle, address, descriptionContainer, detailsBtn);
+  cardBody.append(
+    cardTitle,
+    address,
+    descriptionContainer,
+    priceLevel,
+    detailsBtn
+  );
   card.append(img, cardBody);
 
   return card;

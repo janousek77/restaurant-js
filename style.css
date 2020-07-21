@@ -3,7 +3,7 @@
   position: fixed;
   display: flex;
   z-index: 2;
-  justify-content: space-around;
+  justify-content: space-between;
   flex-direction: row;
   flex-wrap: nowrap;
   float: left;
@@ -11,8 +11,8 @@
 }
 .nav-item {
   font-size: large;
-  padding-left: 50px;
-  padding-right: 50px;
+  padding-left: 70px;
+  padding-right: 70px;
 }
 /* welcome section */
 #welcome-section {
@@ -50,11 +50,16 @@
   position: relative;
   width: 100%;
 }
-
 #card-container {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+}
+.card-text-container {
+  height: 7em;
+  overflow: auto;
+  margin-top: 12px;
+  margin-bottom: 12px;
 }
 #map-title {
   text-align: center;

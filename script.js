@@ -31,8 +31,8 @@ function createCards(input) {
   let img = document.createElement("img");
   img.setAttribute("class", "card-img-top");
   img.setAttribute("style", "height:fit-content");
-  // img.setAttribute("src", input.photo.images.small.url);
-  // img.setAttribute("alt");
+  img.setAttribute("src", input.photo.images.small.url);
+  // img.setAttribute("alt", input.photo.caption);
 
   let cardBody = document.createElement("div");
   cardBody.setAttribute("class", "card-body");
@@ -42,17 +42,24 @@ function createCards(input) {
   cardTitle.innerHTML = input.name;
 
   let address = document.createElement("h6");
-  address.setAttribute("class", "card-title");
+  address.setAttribute("class", "card-subtitle");
+  // address.innerHTML = Object.values(input.address).join();
   address.innerHTML = input.address;
 
   let descriptionPara = document.createElement("p");
   descriptionPara.setAttribute("class", "card-text");
+  // descriptionPara.innerHTML = input.description.substring(0, 100);
   // descriptionPara.innerHTML = input.description;
 
   let detailsBtn = document.createElement("a");
   detailsBtn.setAttribute("class", "btn btn-primary");
   detailsBtn.innerHTML = "View details";
-  detailsBtn.setAttribute("href", input.website);
+  //if restaurant website exists, link to restaurant website; otherwise, link to trip advisor website
+  if (input.website !== undefined) {
+    detailsBtn.setAttribute("href", input.website);
+  } else {
+    detailsBtn.setAttribute("href", input.web_url);
+  }
 
   cardBody.append(cardTitle, descriptionPara, detailsBtn);
   card.append(img, cardBody);

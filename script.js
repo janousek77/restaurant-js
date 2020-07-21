@@ -1,6 +1,27 @@
+mapboxgl.accessToken =
+  "pk.eyJ1IjoiamFub3VzZWs3IiwiYSI6ImNrY3FyMmVpazBvbmMycm9jbm4zOHBwYnUifQ.IZ67E_Bijdd5cX686y2KJg";
+
+var map = new mapboxgl.Map({
+  container: "map_container",
+  style: "mapbox://styles/mapbox/streets-v11", // stylesheet location
+  center: [-122.3321, 47.6062], // starting position [lng, lat]
+  zoom: 9, // starting zoom
+});
+
+map.addControl(
+  new mapboxgl.GeolocateControl({
+    positionOptions: {
+      enableHighAccuracy: true,
+    },
+    trackUserLocation: true,
+  })
+);
+
+let newCity = false;
 document.getElementById("submit_btn").addEventListener("click", (e) => {
   //prevent refreshing
   e.preventDefault();
+  newCity = true;
 
   //clear display section from last search
   document.getElementById("card-container").innerHTML = "";
@@ -15,13 +36,20 @@ document.getElementById("submit_btn").addEventListener("click", (e) => {
       let count = 10;
       for (let i = 0; i < count; i++) {
         if (Object.keys(obj.data[i]).includes("ad_position")) {
-          console.log("we got here");
           count++;
           continue;
         }
+        if (i == 0) {
+          map.flyTo({
+            center: [obj.data[i].longitude, obj.data[i].latitude],
+          });
+        }
+        if (i == 1) newCity = false;
         document
           .getElementById("card-container")
           .append(createCards(obj.data[i]));
+
+        addMarker(obj.data[i]);
       }
 
       //clear the search bar
@@ -99,4 +127,16 @@ function createCards(input) {
   card.append(img, cardBody);
 
   return card;
+}
+
+let markerArr = [];
+function addMarker(obj) {
+  if (newCity) {
+    markerArr.forEach((x) => x.remove());
+    markerArr = [];
+  }
+  let marker = new mapboxgl.Marker()
+    .setLngLat([obj.longitude, obj.latitude])
+    .addTo(map);
+  markerArr.push(marker);
 }

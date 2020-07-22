@@ -1,16 +1,36 @@
+require("dotenv").config();
 const express = require("express");
+const request = require("request");
 const app = express(); // instance of express
+
 var cors = require("cors");
 
 app.use(cors()); // gets us past cors errors
 
 var unirest = require("unirest"); // backend http calls (get, post, put, delete)
 
+// get restaurants based on the city name
 app.get("/location/:location", function (req, res) {
   const key = req.params.location;
   getLatLong(key)
     .then((obj) => getRestaurants(obj))
     .then((result) => res.json(result));
+});
+
+//get weather info based on city name
+app.get("/weather/:location", function (req, res) {
+  const key = req.params.location;
+  var data;
+  request(
+    `https://api.openweathermap.org/data/2.5/weather?q=${key}&appid=${process.env.weatherAPIKey}`,
+    function (err, response, body) {
+      data = JSON.parse(body);
+      console.log(data);
+      res.json(data);
+    }
+  );
+  // .then((result) => result.json(result));
+  // console.log(data);
 });
 
 // Gets a cities info from api and sets a global variable to the result
@@ -28,7 +48,7 @@ function getLatLong(location) {
 
     req.headers({
       "x-rapidapi-host": "tripadvisor1.p.rapidapi.com",
-      "x-rapidapi-key": "e4559a27f7msh2a8058a2bc9dac0p1bba75jsne0adc7f85b00",
+      "x-rapidapi-key": process.env.tripadvisorKey,
       useQueryString: true,
     });
 
@@ -39,7 +59,7 @@ function getLatLong(location) {
   });
 }
 
-// Api call function that gets a list of restaurants from a city by latitude and longitude
+// // Api call function that gets a list of restaurants from a city by latitude and longitude
 function getRestaurants(place) {
   return new Promise(function (resolve, reject) {
     var req = unirest(
@@ -59,7 +79,7 @@ function getRestaurants(place) {
 
     req.headers({
       "x-rapidapi-host": "tripadvisor1.p.rapidapi.com",
-      "x-rapidapi-key": "e4559a27f7msh2a8058a2bc9dac0p1bba75jsne0adc7f85b00",
+      "x-rapidapi-key": process.env.tripadvisorKey,
       useQueryString: true,
     });
 
@@ -70,4 +90,4 @@ function getRestaurants(place) {
   });
 }
 
-app.listen(3000);
+app.listen(process.env.PORT || 3000);

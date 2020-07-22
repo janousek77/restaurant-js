@@ -57,6 +57,13 @@ document.getElementById("submit_btn").addEventListener("click", (e) => {
       //check response.json in console
       console.log(obj);
     });
+
+  fetch(`http://localhost:3000/weather/${keywords}`)
+    .then((response) => response.json())
+    .then((obj) => {
+      console.log(obj);
+      document.getElementById("card-container").append(createWeatherInfo(obj));
+    });
 });
 
 //function to create cards
@@ -127,6 +134,28 @@ function createCards(input) {
   card.append(img, cardBody);
 
   return card;
+}
+
+//function to create weather info
+function createWeatherInfo(weatherObj) {
+  let weatherCard = document.createElement("p");
+  weatherCard.setAttribute("class", "info-container");
+
+  let weatherIcon = document.createElement("img");
+  weatherIcon.setAttribute("src", weatherObj.weather.icon);
+
+  let cityName = document.createElement("span");
+  cityName.innerHTML = weatherObj.name;
+
+  let temp = document.createElement("span");
+  temp.innerHTML = weatherObj.main.temp;
+
+  let description = document.createElement("span");
+  description.innerHTML = weatherObj.weather.main;
+
+  weatherCard.append(weatherIcon, cityName, temp, description);
+
+  return weatherCard;
 }
 
 let markerArr = [];

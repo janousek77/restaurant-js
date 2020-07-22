@@ -13,11 +13,19 @@ html {
   flex-wrap: nowrap;
   float: left;
   width: 100%;
+  z-index: 1;
 }
 .nav-item {
   font-size: large;
   padding-left: 70px;
   padding-right: 70px;
+}
+/* weather section */
+.weather-info-container {
+  position: fixed;
+  color: white;
+  right: 20%;
+  z-index: 2;
 }
 /* search section */
 .search-section {

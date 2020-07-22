@@ -1,6 +1,8 @@
 mapboxgl.accessToken =
   "pk.eyJ1IjoiamFub3VzZWs3IiwiYSI6ImNrY3FyMmVpazBvbmMycm9jbm4zOHBwYnUifQ.IZ67E_Bijdd5cX686y2KJg";
 
+const url = "https://super-eater.herokuapp.com";
+
 var map = new mapboxgl.Map({
   container: "map_container",
   style: "mapbox://styles/mapbox/streets-v11", // stylesheet location
@@ -30,7 +32,7 @@ document.getElementById("submit_btn").addEventListener("click", (e) => {
   let keywords = document.getElementById("input-city").value;
   console.log(keywords); // check input
 
-  fetch(`http://localhost:3000/location/${keywords}`)
+  fetch(`${url}/location/${keywords}`)
     .then((response) => response.json())
     .then((obj) => {
       let count = 10;
@@ -58,11 +60,11 @@ document.getElementById("submit_btn").addEventListener("click", (e) => {
       console.log(obj);
     });
 
-  fetch(`http://localhost:3000/weather/${keywords}`)
+  fetch(`${url}/weather/${keywords}`)
     .then((response) => response.json())
     .then((obj) => {
       console.log(obj);
-      document.getElementById("card-container").append(createWeatherInfo(obj));
+      // document.getElementById("card-container").append(createWeatherInfo(obj));
     });
 });
 

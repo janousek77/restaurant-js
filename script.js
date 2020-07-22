@@ -64,7 +64,8 @@ document.getElementById("submit_btn").addEventListener("click", (e) => {
     .then((response) => response.json())
     .then((obj) => {
       console.log(obj);
-      // document.getElementById("card-container").append(createWeatherInfo(obj));
+      document.getElementById("weather-container");
+      // .append(createWeatherInfo(obj));
     });
 });
 
@@ -138,7 +139,7 @@ function createCards(input) {
   return card;
 }
 
-//function to create weather info
+// function to create weather info
 function createWeatherInfo(weatherObj) {
   let weatherCard = document.createElement("p");
   weatherCard.setAttribute("class", "info-container");

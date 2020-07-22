@@ -20,7 +20,10 @@ map.addControl(
   })
 );
 
+let start = 0;
+let count = 10;
 let newCity = false;
+let restObj;
 document.getElementById("submit_btn").addEventListener("click", (e) => {
   //prevent refreshing
   e.preventDefault();
@@ -31,62 +34,79 @@ document.getElementById("submit_btn").addEventListener("click", (e) => {
 
   //extract keywords input from the search bar
   let keywords = document.getElementById("input-city").value;
-  console.log(keywords); // check input
 
   fetch(`${url}/location/${keywords}`)
     .then((response) => response.json())
     .then((obj) => {
-      let count = 10;
-      for (let i = 0; i < count; i++) {
-        if (Object.keys(obj.data[i]).includes("ad_position")) {
-          count++;
-          continue;
-        }
-        if (i == 0) {
-          map.flyTo({
-            center: [obj.data[i].longitude, obj.data[i].latitude],
-          });
-        }
-        if (i == 1) newCity = false;
-        document
-          .getElementById("card-container")
-          .append(createCards(obj.data[i]));
-
-        addMarker(obj.data[i]);
-      }
-
+      restObj = obj;
+      cardLoop(obj);
       //clear the search bar
       document.getElementById("input-city").value = "";
-      //check response.json in console
-      console.log(obj);
     });
 
   fetch(`${url}/weather/${keywords}`)
     .then((response) => response.json())
     .then((obj) => {
-      console.log(obj);
-
-      document.getElementById("cityName").innerHTML =
-        obj.name + " current weather: " + "</t>";
-      document.getElementById("temp").innerHTML =
-        Math.round(obj.main.temp) + "&deg" + "</t>";
-      document.getElementById("description").innerHTML =
-        obj.weather[0].description;
-      document
-        .getElementById("weatherIcon")
-        .setAttribute(
-          "src",
-          `http://openweathermap.org/img/wn/${obj.weather[0].icon}@2x.png`
-        ) + "</t>";
-      document.getElementById("max-min-temp").innerHTML =
-        Math.round(obj.main.temp_max) +
-        "&deg" +
-        "/" +
-        Math.round(obj.main.temp_min) +
-        "&deg" +
-        "</t>";
+      addWeather(obj);
     });
 });
+
+// loops through city restaurant object and sends each restaurant to the createCards()
+function cardLoop(obj) {
+  if (newCity) {
+    start = 0;
+    count = 10;
+  }
+  for (let i = start; i < count; i++) {
+    if (Object.keys(obj.data[i]).includes("ad_position")) {
+      count++;
+      continue;
+    }
+    // moves map center to the first restuarants lat/long
+    if (i == 0) {
+      map.flyTo({
+        center: [obj.data[i].longitude, obj.data[i].latitude],
+      });
+    }
+    if (i == 1) newCity = false;
+    document.getElementById("card-container").append(createCards(obj.data[i]));
+
+    addMarker(obj.data[i]);
+  }
+  let more = document.createElement("button");
+  more.innerHTML = "Show more restuarants";
+  more.setAttribute("id", "more-btn");
+  document.getElementById("card-container").append(more);
+
+  more.onclick = function () {
+    cardLoop(restObj);
+    more.parentNode.removeChild(more);
+  };
+  start = count;
+  count += 10;
+}
+
+// adds weather section to page
+function addWeather(obj) {
+  document.getElementById("cityName").innerHTML =
+    obj.name + " current weather: " + "</t>";
+  document.getElementById("temp").innerHTML =
+    Math.round(obj.main.temp) + "&deg" + "</t>";
+  document.getElementById("description").innerHTML = obj.weather[0].description;
+  document
+    .getElementById("weatherIcon")
+    .setAttribute(
+      "src",
+      `http://openweathermap.org/img/wn/${obj.weather[0].icon}@2x.png`
+    ) + "</t>";
+  document.getElementById("max-min-temp").innerHTML =
+    Math.round(obj.main.temp_max) +
+    "&deg" +
+    "/" +
+    Math.round(obj.main.temp_min) +
+    "&deg" +
+    "</t>";
+}
 
 //function to create cards
 function createCards(input) {
@@ -158,14 +178,38 @@ function createCards(input) {
   return card;
 }
 
-let markerArr = [];
+let markerArr = []; // holds all the markers in a city
+// Adds a marker for each restuaraunt to the map
 function addMarker(obj) {
   if (newCity) {
+    // if a new city is chosen removes all the markers on the map
     markerArr.forEach((x) => x.remove());
     markerArr = [];
   }
-  let marker = new mapboxgl.Marker()
+  let photo =
+    obj.photo === undefined
+      ? "https://www.questrmg.com/wp-content/uploads/2019/03/web-banner-Top-Three-Restaurant-Trends.jpg"
+      : obj.photo.images.small.url;
+  let marker = new mapboxgl.Marker() // creates markers of city
     .setLngLat([obj.longitude, obj.latitude])
+    .setPopup(
+      new mapboxgl.Popup().setHTML(
+        "<img class=mapIcon src=" +
+          photo +
+          "> <h6>" +
+          obj.name +
+          "</h6>" +
+          obj.address
+      )
+    )
     .addTo(map);
+
   markerArr.push(marker);
 }
+
+// document.getElementById("more-btn").onclick = function morePush(restObj) {
+//   console.log("more push");
+//   console.log(restObj);
+//   // cardLoop(restObj);
+//   // more.parentNode.removeChild(more);
+// };

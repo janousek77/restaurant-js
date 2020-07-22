@@ -1,7 +1,8 @@
 mapboxgl.accessToken =
   "pk.eyJ1IjoiamFub3VzZWs3IiwiYSI6ImNrY3FyMmVpazBvbmMycm9jbm4zOHBwYnUifQ.IZ67E_Bijdd5cX686y2KJg";
 
-const url = "https://super-eater.herokuapp.com";
+// const url = "https://super-eater.herokuapp.com";
+const url = "http://localhost:3000";
 
 var map = new mapboxgl.Map({
   container: "map_container",
@@ -64,8 +65,26 @@ document.getElementById("submit_btn").addEventListener("click", (e) => {
     .then((response) => response.json())
     .then((obj) => {
       console.log(obj);
-      document.getElementById("weather-container");
-      // .append(createWeatherInfo(obj));
+
+      document.getElementById("cityName").innerHTML =
+        obj.name + " current weather: " + "</t>";
+      document.getElementById("temp").innerHTML =
+        Math.round(obj.main.temp) + "&deg" + "</t>";
+      document.getElementById("description").innerHTML =
+        obj.weather[0].description;
+      document
+        .getElementById("weatherIcon")
+        .setAttribute(
+          "src",
+          `http://openweathermap.org/img/wn/${obj.weather[0].icon}@2x.png`
+        ) + "</t>";
+      document.getElementById("max-min-temp").innerHTML =
+        Math.round(obj.main.temp_max) +
+        "&deg" +
+        "/" +
+        Math.round(obj.main.temp_min) +
+        "&deg" +
+        "</t>";
     });
 });
 
@@ -137,28 +156,6 @@ function createCards(input) {
   card.append(img, cardBody);
 
   return card;
-}
-
-// function to create weather info
-function createWeatherInfo(weatherObj) {
-  let weatherCard = document.createElement("p");
-  weatherCard.setAttribute("class", "info-container");
-
-  let weatherIcon = document.createElement("img");
-  weatherIcon.setAttribute("src", weatherObj.weather.icon);
-
-  let cityName = document.createElement("span");
-  cityName.innerHTML = weatherObj.name;
-
-  let temp = document.createElement("span");
-  temp.innerHTML = weatherObj.main.temp;
-
-  let description = document.createElement("span");
-  description.innerHTML = weatherObj.weather.main;
-
-  weatherCard.append(weatherIcon, cityName, temp, description);
-
-  return weatherCard;
 }
 
 let markerArr = [];

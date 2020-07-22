@@ -22,15 +22,13 @@ app.get("/weather/:location", function (req, res) {
   const key = req.params.location;
   var data;
   request(
-    `https://api.openweathermap.org/data/2.5/weather?q=${key}&appid=${process.env.weatherAPIKey}`,
+    `https://api.openweathermap.org/data/2.5/weather?q=${key}&units=imperial&appid=${process.env.weatherAPIKey}`,
     function (err, response, body) {
       data = JSON.parse(body);
       console.log(data);
       res.json(data);
     }
   );
-  // .then((result) => result.json(result));
-  // console.log(data);
 });
 
 // Gets a cities info from api and sets a global variable to the result
@@ -59,7 +57,7 @@ function getLatLong(location) {
   });
 }
 
-// // Api call function that gets a list of restaurants from a city by latitude and longitude
+// Api call function that gets a list of restaurants from a city by latitude and longitude
 function getRestaurants(place) {
   return new Promise(function (resolve, reject) {
     var req = unirest(
@@ -90,4 +88,5 @@ function getRestaurants(place) {
   });
 }
 
-app.listen(process.env.PORT || 3000);
+// app.listen(process.env.PORT || 3000);
+app.listen(3000);

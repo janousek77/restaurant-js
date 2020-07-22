@@ -129,14 +129,16 @@ function createCards(input) {
   return card;
 }
 
-let markerArr = [];
+let markerArr = []; // holds all the markers in a city
 function addMarker(obj) {
   if (newCity) {
+    // if a new city is chosen removes all the markers on the map
     markerArr.forEach((x) => x.remove());
     markerArr = [];
   }
-  let marker = new mapboxgl.Marker()
+  let marker = new mapboxgl.Marker() // creates markers of city
     .setLngLat([obj.longitude, obj.latitude])
+    .setPopup(new mapboxgl.Popup().setHTML(obj.name + "<br>" + obj.address))
     .addTo(map);
   markerArr.push(marker);
 }

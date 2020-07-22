@@ -28,7 +28,7 @@ function getLatLong(location) {
 
     req.headers({
       "x-rapidapi-host": "tripadvisor1.p.rapidapi.com",
-      "x-rapidapi-key": "e4559a27f7msh2a8058a2bc9dac0p1bba75jsne0adc7f85b00",
+      "x-rapidapi-key": "5c25132b24mshe136911e3d978fbp1ab1ddjsn83f44084f24c",
       useQueryString: true,
     });
 

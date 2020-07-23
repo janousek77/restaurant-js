@@ -20,12 +20,6 @@ map.addControl(
   })
 );
 
-// map.on("click", function (e) {
-//   map.flyTo({
-//     center: [e.lngLat.lng, e.lngLat.lat],
-//   });
-// });
-
 let start = 0;
 let count = 10;
 let newCity = false;
@@ -81,6 +75,7 @@ function cardLoop(obj) {
   let more = document.createElement("button");
   more.innerHTML = "Show more restuarants";
   more.setAttribute("id", "more-btn");
+  more.setAttribute("class", "btn btn-primary");
   document.getElementById("card-container").append(more);
 
   more.onclick = function () {

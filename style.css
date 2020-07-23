@@ -36,8 +36,9 @@ html {
 .search-section {
   border: solid 2px black;
   position: relative;
+  background-color: black;
   width: 100%;
-  height: 58%;
+  height: 100%;
 }
 #search-bar-and-submit-btn {
   display: flex;
@@ -53,6 +54,7 @@ html {
 .search-bar-background-pic {
   position: relative;
   width: 100%;
+  height: 100vh;
   z-index: 0;
 }
 #search-bar-background-pic {

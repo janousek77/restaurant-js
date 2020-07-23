@@ -1,8 +1,8 @@
 mapboxgl.accessToken =
   "pk.eyJ1IjoiamFub3VzZWs3IiwiYSI6ImNrY3FyMmVpazBvbmMycm9jbm4zOHBwYnUifQ.IZ67E_Bijdd5cX686y2KJg";
 
-// const url = "https://super-eater.herokuapp.com";
-const url = "http://localhost:3000";
+const url = "https://super-eater.herokuapp.com";
+// const url = "http://localhost:3000";
 
 var map = new mapboxgl.Map({
   container: "map_container",
@@ -19,6 +19,12 @@ map.addControl(
     trackUserLocation: true,
   })
 );
+
+// map.on("click", function (e) {
+//   map.flyTo({
+//     center: [e.lngLat.lng, e.lngLat.lat],
+//   });
+// });
 
 let start = 0;
 let count = 10;
@@ -70,7 +76,6 @@ function cardLoop(obj) {
     }
     if (i == 1) newCity = false;
     document.getElementById("card-container").append(createCards(obj.data[i]));
-
     addMarker(obj.data[i]);
   }
   let more = document.createElement("button");
@@ -80,10 +85,18 @@ function cardLoop(obj) {
 
   more.onclick = function () {
     cardLoop(restObj);
-    more.parentNode.removeChild(more);
+    document
+      .getElementById("more-btn")
+      .parentNode.removeChild(document.getElementById("more-btn"));
   };
   start = count;
   count += 10;
+  if (count > Object.keys(restObj.data).length) {
+    count = Object.keys(restObj.data).length;
+    document
+      .getElementById("more-btn")
+      .parentNode.removeChild(document.getElementById("more-btn"));
+  }
 }
 
 // adds weather section to page
@@ -155,6 +168,9 @@ function createCards(input) {
     priceLevel.innerHTML = "Price: N/A";
   }
 
+  let btnDiv = document.createElement("div");
+  btnDiv.setAttribute("class", "btn-div");
+
   let detailsBtn = document.createElement("a");
   detailsBtn.setAttribute("class", "btn btn-primary");
   detailsBtn.innerHTML = "View details";
@@ -165,13 +181,26 @@ function createCards(input) {
     detailsBtn.setAttribute("href", input.web_url);
   }
 
+  let mapBtn = document.createElement("a");
+  mapBtn.setAttribute("class", "btn btn-primary");
+  mapBtn.innerHTML = "find on map";
+  mapBtn.onclick = function () {
+    map.flyTo({
+      center: [input.longitude, input.latitude],
+      zoom: 17,
+    });
+  };
+
+  btnDiv.append(detailsBtn, mapBtn);
+
   descriptionContainer.append(descriptionPara);
   cardBody.append(
     cardTitle,
     address,
     descriptionContainer,
     priceLevel,
-    detailsBtn
+    btnDiv
+    // detailsBtn,
   );
   card.append(img, cardBody);
 
@@ -206,10 +235,3 @@ function addMarker(obj) {
 
   markerArr.push(marker);
 }
-
-// document.getElementById("more-btn").onclick = function morePush(restObj) {
-//   console.log("more push");
-//   console.log(restObj);
-//   // cardLoop(restObj);
-//   // more.parentNode.removeChild(more);
-// };

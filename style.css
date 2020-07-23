@@ -117,3 +117,9 @@ html {
 .mapboxgl-popup {
   text-align: center;
 }
+
+.btn-div {
+  display: flex;
+  justify-content: space-between;
+  color: white;
+}

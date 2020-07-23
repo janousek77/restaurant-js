@@ -25,7 +25,6 @@ app.get("/weather/:location", function (req, res) {
     `https://api.openweathermap.org/data/2.5/weather?q=${key}&units=imperial&appid=${process.env.weatherAPIKey}`,
     function (err, response, body) {
       data = JSON.parse(body);
-      console.log(data);
       res.json(data);
     }
   );
@@ -88,5 +87,5 @@ function getRestaurants(place) {
   });
 }
 
-// app.listen(process.env.PORT || 3000);
-app.listen(3000);
+app.listen(process.env.PORT || 3000);
+// app.listen(3000);

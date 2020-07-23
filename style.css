@@ -37,7 +37,7 @@ html {
   border: solid 2px black;
   position: relative;
   width: 100%;
-  height: 58%;
+  height: 77%;
 }
 #search-bar-and-submit-btn {
   display: flex;
@@ -58,9 +58,22 @@ html {
 #search-bar-background-pic {
   width: 100%;
 }
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 1050px) {
   .search-bar-background-pic {
     opacity: 0;
+  }
+  .search-section {
+    border: solid 2px black;
+    position: relative;
+    width: 100%;
+    height: 25%;
+  } 
+  .google-slides-container iframe{
+    position: absolute;
+    top: 3rem;
+    left: 0;
+    width: 100%;
+    height: 40vh;
   }
 }
 /* display section */
@@ -122,4 +135,21 @@ html {
   display: flex;
   justify-content: space-between;
   color: white;
+}
+
+/* Presentation Page */
+
+.google-slides-container{
+  position: relative;
+  width: 100%;
+  padding-top: 70%;
+  overflow: hidden;
+}
+
+.google-slides-container iframe{
+  position: absolute;
+  top: 3rem;
+  left: 0;
+  width: 100%;
+  height: 95vh;
 }
